@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>應用程式嵌入概念驗證 (PoC)</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #e9ecef;
+            margin: 0;
+            padding: 40px 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .host-page {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        header {
+            border-bottom: 2px solid #eee;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+        }
+
+        .info-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* 嵌入容器：定義應用程式在別人的網頁中看起來的樣子 */
+        .app-embed-wrapper {
+            position: relative;
+            width: 100%;
+            height: 650px; /* 根據原始 800x600 需求設定稍高一點的高度 */
+            border: 2px solid #6496FF; /* 使用應用程式的主色調作為外框 */
+            border-radius: 12px;
+            overflow: hidden;
+            background: #F0F0F0;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        footer {
+            margin-top: 30px;
+            font-size: 0.85rem;
+            color: #777;
+        }
+
+        code {
+            background: #eee;
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="host-page">
+        <header>
+            <h1>企業入口網站 (假想宿主頁面)</h1>
+            <p>展示如何將「訂餐系統」作為小工具 (Widget) 嵌入到任何現有的內部系統中。</p>
+        </header>
+
+        <div class="info-box">
+            <strong>💡 注意：</strong> 下方的內容是透過 <code>&lt;iframe&gt;</code> 從 Astro 開發伺服器（預設為 <code>localhost:4321</code>）跨網域嵌入的。
+        </div>
+
+        <!-- 核心嵌入程式碼 -->
+        <div class="app-embed-wrapper">
+            <iframe 
+                src="http://localhost:4321" 
+                title="訂餐系統應用程式"
+                allow="geolocation; clipboard-write; sandbox-allow-modals"
+                loading="lazy">
+            </iframe>
+        </div>
+
+        <footer>
+            <h3>實作可能性與限制說明：</h3>
+            <ul>
+                <li><strong>URL 方案：</strong> 本 PoC 直接連結開發伺服器。部屬至 Vercel 或 Netlify 後，只需更換 <code>src</code> 為該 URL。</li>
+                <li><strong>X-Frame-Options：</strong> 在 <code>astro.config.mjs</code> 或伺服器中，必須確保沒有設定 <code>DENY</code>。如果使用 SSR，需確保 HTTP 標頭允許嵌入。</li>
+                <li><strong>高度自適應：</strong> 由於本應用程式使用了 RWD 佈局，嵌入容器的寬度可以自由調整，內容會自動調適。若要高度也自適應，可使用 <code>PostMessage</code> API 由 iframe 告知父視窗其內容高度。</li>
+                <li><strong>網域驗證：</strong> 建議在生產環境使用 CSP <code>frame-ancestors</code> 來限制哪些網域可以嵌入本程式。</li>
+            </ul>
+        </footer>
+    </div>
+
+</body>
+</html>
