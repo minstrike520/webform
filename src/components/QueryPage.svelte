@@ -12,7 +12,7 @@
   let loading = false;
   
   // Ratios: 3, 2, 2, 1, 2
-  const headers = ["時間戳記", "姓名", "餐點", "附餐", "其他選項"];
+  let headers = ["時間戳記", "姓名", "餐點", "附餐", "其他選項"];
   const colWidths = [3, 2, 2, 1, 2];
 
   let popupMessage = "";
@@ -39,7 +39,12 @@
         
         // Let's exclude the first row if it looks like headers?
         // Or better, let's keep it simple: just show what we get for now, users can see.
-        data = json; 
+        if (json && json.length > 0) {
+          headers = json[0];
+          data = json.slice(1);
+        } else {
+          data = [];
+        }
       } else {
         popupMessage = "查詢錯誤: " + (json.error || "Unknown");
         showPopup = true;
