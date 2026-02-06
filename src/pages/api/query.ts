@@ -2,8 +2,7 @@ import type { APIRoute } from 'astro';
 import { SHEET_CONFIG } from '../../types';
 import { parseGoogleSheetCSV } from '../../utils/csv';
 
-export const GET: APIRoute = async ({ request }) => {
-  const url = new URL(request.url);
+export const GET: APIRoute = async ({ url }) => {
   const tqParams = url.searchParams.get('tq');
   const tq = tqParams === null ? '' : tqParams;
   

@@ -22,6 +22,7 @@
     loading = true;
     try {
       const res = await fetch(`/api/query?tq=${encodeURIComponent(tq)}`);
+      // tq-problem resolved -> was due to SSR context
       const json = await res.json();
       
       if (res.ok) {
