@@ -28,7 +28,8 @@
     transition: background-color 0.3s;
   }
   
-  .dot.active {
-    background-color: #888; /* Darker gray for active */
-  }
+.dot.active {
+    background-color: #6496FF;
+    transform: scale(1.2);
+}
 </style>
